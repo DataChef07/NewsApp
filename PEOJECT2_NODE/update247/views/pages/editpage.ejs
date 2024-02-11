@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partial/head'); %>
+  <style>
+    input {
+        width: 100%;
+    }
+  </style>
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partial/headerAdmin'); %>
+</header>
+
+<main>
+  <div class="jumbotron">
+    <h1 style="text-align: center; padding: 20px;">Edit News</h1>
+    <div class="row">
+      <div class="col-sm-10">
+        <form action="/editData" method="POST" id="editData" style="display: flex; flex-direction: column; ">
+          <input type="hidden" name="newsId" value="<%= data._id %>">
+          <label for="title" style="margin-bottom: 5px;">Title</label>
+          <input type="text" id="title" name="title" required style="padding: 8px; margin-bottom: 10px;" value="<%= data.title %>">
+          <label for="content" style="margin-bottom: 5px;">Description</label>
+          <input type="text" id="content" name="content" required style="padding: 8px; margin-bottom: 10px;" value="<%= data.content %>">
+          <label for="image_link" style="margin-bottom: 5px;">Image URL</label>
+          <input type="text" id="image_link" name="image_link" required style="padding: 8px; margin-bottom: 10px;" value="<%= data.image_link %>">
+          <label for="publishedAt" style="margin-bottom: 5px;">Published At</label>
+          <input type="datetime" id="publishedAt" name="publishedAt" required style="padding: 8px; margin-bottom: 10px;" value="<%= data.publishedAt %>">
+          <div style="display: flex; justify-content: space-between; width: 100%;">
+            <button type="submit" style="padding: 10px; cursor: pointer; background-color: rgb(21, 141, 154); flex: 1;">Update</button>
+            <button type="button" onclick="cleardata()" style="padding: 10px; cursor: pointer; background-color: gold; flex: 1;">Back to Original</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Function to clear data
+    function cleardata() {
+      document.getElementById('editData').reset();
+    } 
+    </script>
+</main>
+
+<footer>
+  <%- include('../partial/footer'); %>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partial/head'); %>
+</head>
+
+<body class="container">
+
+  <header>
+    <%- include('../partial/headerUser'); %>
+  </header>
+
+  <div class="col-sm-6 mx-auto">
+    <div class="jumbotron text-center">
+      <h1 style="padding: 20px;">Send Query</h1>
+      <form action="/sendemail" method="POST" id="queryform">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-3 text-md-right">
+              <label for="email">Email</label>
+            </div>
+            <div class="col-md-9">
+              <input type="text" id="email" name="email" class="form-control" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-3 text-md-right">
+              <label for="query">Query</label>
+            </div>
+            <div class="col-md-9">
+              <input type="query" id="query" name="query" class="form-control" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group text-center">
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </form>
+
+      <div class="col-sm-6">
+        <div class="well">
+          <% if (message) { %>
+              <p><%= message %></p>
+          <% } %>
+      </div>
+      
+    </div>
+  </div>
+
+ 
+
+  <footer>
+    <%- include('../partial/footer'); %>
+  </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partial/head'); %>
+</head>
+
+<body class="container">
+
+  <header>
+    <%- include('../partial/header', {variant: 'compact'}); %>
+  </header>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="jumbotron">
+        <h1 style="text-align: center; padding: 20px;">REGISTER</h1>
+        <form action="/register" method="POST" id="registrationForm" style="display: flex; flex-direction: column; ">
+          <label for="regName" style="margin-bottom: 5px;">Name</label>
+          <input type="text" id="regName" name="regName" required style="padding: 8px; margin-bottom: 10px;">
+          <label for="regEmail" style="margin-bottom: 5px;">Email</label>
+          <input type="email" id="regEmail" name="regEmail" required style="padding: 8px; margin-bottom: 10px;">
+          <label for="regPassword" style="margin-bottom: 5px;">Password</label>
+          <input type="password" id="regPassword" name="regPassword" required style="padding: 8px; margin-bottom: 10px;">
+          <div style="display: flex; justify-content: space-between; width: 100%;">
+            <button type="submit" style="padding: 10px; cursor: pointer; background-color: rgb(21, 141, 154); flex: 1;">Register</button>
+            <button type="button" onclick="resetRegistrationForm()" style="padding: 10px; cursor: pointer; background-color: gold; flex: 1;">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="jumbotron">
+        <h1 style="text-align: center; padding: 20px;">LOG IN</h1>
+        <form action="/login" method="POST" id="loginForm" style="display: flex; flex-direction: column; ">
+          <label for="username" style="margin-bottom: 5px;">Email</label>
+          <input type="text" id="email" name="email" required style="padding: 8px; margin-bottom: 10px;">
+          <label for="password" style="margin-bottom: 5px;">Password</label>
+          <input type="password" id="password" name="password" required style="padding: 8px; margin-bottom: 10px;">
+          <div style="display: flex; justify-content: space-between; width: 100%;">
+            <button type="submit" style="padding: 10px; cursor: pointer; background-color: green; flex: 1;">Login</button>
+            <button type="button" onclick="resetLoginForm()" style="padding: 10px; cursor: pointer; background-color: red; flex: 1;">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-8">
+    <div class="well">
+      <% if (message) { %>
+      <p><%= message %></p>
+      <% } %>
+    </div>
+  </div>
+
+  <script>
+    function resetRegistrationForm() {
+      document.getElementById('registrationForm').reset();
+    }
+
+    function resetLoginForm() {
+      document.getElementById('loginForm').reset();
+    }
+  </script>
+
+</body>
+
+</html>

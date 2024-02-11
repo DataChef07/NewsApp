@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partial/head'); %>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      border-top: 2px solid #ccc;
+    }
+
+    .main-content {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .hr-line {
+      border-top: 1px solid #ccc;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .labels-container {
+      display: flex;
+      justify-content: space-evenly;
+      margin-bottom: 20px;
+    }
+
+    .label {
+      flex: 1;
+      text-align: center;
+    }
+
+    .carousel-item {
+      height: 450px; /* Set your desired height */
+    }
+
+    .carousel-item img {
+      object-fit: cover; 
+      height: 100%; 
+    }
+
+
+    /* Chatbox styles */
+    .chatbox {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #bab2b2;
+      border: 1px solid #d9d9d9;
+      border-radius: 5px;
+      width: 300px;
+      padding: 10px;
+      display: none; 
+    }
+
+    .chat-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      background-color: #d9d9d9;
+    }
+
+  </style>
+</head>
+
+<body class="container">
+
+  <header>
+    <%- include('../partial/headerUser'); %>
+  </header>
+
+  <div class="main-content">
+    <!-- Title Section -->
+    <div>
+      <h2 class="section-title">Weather Report</h2>
+
+      <div class="weather-container">
+
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="jumbotron" id="weather1" style="height: 100px; ">
+              <p>Loading...</p>
+            </div>
+          </div>
+
+          <div class="col-sm-3">
+            <div class="jumbotron" id="weather2" style="height: 130px; margin: 0; padding: 0;">
+              <p>Loading...</p>
+            </div>
+          </div>
+
+          <div class="col-sm-3">
+            <div class="jumbotron" id="weather3" style="height: 100px;">
+              <p>Loading...</p>
+            </div>
+          </div>
+
+          <div class="col-sm-3">
+            <div class="jumbotron" id="weather4" style="height: 100px;">
+              <p>Loading...</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <hr class="hr-line">
+    </div>
+
+    <!-- Carousel Section -->
+    <div id="imageCarousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <!-- Images will be dynamically added here -->
+      </div>
+      <a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#imageCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+    <!-- Labels Section -->
+    <hr class="hr-line">
+
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="jumbotron" id="jumbotron1" style="height: 430px;">
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="jumbotron" id="jumbotron2" style="height: 430px;">
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="jumbotron" id="jumbotron3" style="height: 430px;">
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Dummy Chatbox UI -->
+    <div class="chat-icon" onclick="toggleChatbox()">
+      <h1>📞 👨🏻‍💻</h1>
+    </div>
+    <div class="chatbox" id="chatbox">
+      <div>
+        <strong>Chat Support</strong>
+        <span onclick="toggleChatbox()" style="float: right; cursor: pointer;">-</span>
+      </div>
+      <div style="height: 200px; overflow-y: auto;">
+        <!-- Dummy Chat Messages -->
+        <div id="chatMessages"></div>
+        <!-- ... Add more chat messages as needed ... -->
+      </div>
+      <div>
+        <input type="text" id="userMessage" class="chat-input" placeholder="Type your message">
+        <button class="send-button" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <%- include('../partial/footer'); %>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      // Fetch data for jumbotron sections from server API
+      $.ajax({
+        url: '/api/news',
+        method: 'GET',
+        success: function (newsData) {
+          // Handle the news data
+          updateJumbotrons(newsData);
+        },
+        error: function (err) {
+          console.error('Error fetching news:', err);
+        }
+      });
+
+      // Fetch images from server API
+      $.ajax({
+        url: '/api/images',
+        method: 'GET',
+        success: function (data) {
+          // Handle the image data
+          updateImageCarousel(data);
+        },
+        error: function (err) {
+          console.error('Error fetching images:', err);
+        }
+      });
+
+      // Fetch weather data using Geolocation API
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          // Fetch weather data from OpenWeatherMap API
+          $.ajax({
+            url: `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=c3345f36adb195197403003e287879fd`,
+            method: 'GET',
+            success: function (weatherData) {
+              // Handle the weather data
+              updateWeatherSections(weatherData);
+            },
+            error: function (err) {
+              console.error('Error fetching weather:', err);
+            }
+          });
+        });
+      }
+    });
+
+    function updateJumbotrons(newsData) {
+      // Update the jumbotron sections with fetched news data
+      $('#jumbotron1').html('<p><strong>' + newsData[0].title + '</strong><p><p>' + newsData[0].content + '</p>');
+      $('#jumbotron2').html('<p><strong>' + newsData[1].title + '</strong><p><p>' + newsData[1].content + '</p>');
+      $('#jumbotron3').html('<p><strong>' + newsData[2].title + '</strong><p><p>' + newsData[2].content + '</p>');
+    }
+
+    function updateImageCarousel(data) {
+      var carouselInner = $('#imageCarousel .carousel-inner');
+      // Add images to the carousel
+      data.forEach(function (imageUrl, index) {
+        var isActive = index === 0 ? 'active' : '';
+        var imgElement = $('<div class="carousel-item ' + isActive + '"><img class="d-block w-100" alt="Slider Image" src="' + imageUrl + '"></div>');
+        carouselInner.append(imgElement);
+      });
+    }
+
+    function updateWeatherSections(weatherData) {
+      // Update the weather sections with fetched weather data
+      console.log(weatherData);
+      $('#weather1').html('<p><strong>Weather: </strong>' + weatherData.weather[0].main + '</p>');
+      $('#weather2').html('<img src="https://openweathermap.org/img/wn/' + weatherData.weather[0].icon + '@2x.png" alt="Weather Icon">');
+      const temp = weatherData.main.temp - 273.15
+      $('#weather3').html('<p><strong>Temperature: </strong>' + parseInt(temp) + ' &#8451;</p>');
+      $('#weather4').html('<p><strong>City: </strong>' + weatherData.name + '</p>');
+    }
+
+    // Toggle chatbox visibility
+    function toggleChatbox() {
+      $('#chatbox').slideToggle();
+    }
+
+    // Dummy function to simulate sending a message
+    function sendMessage() {
+      const userMessage = $('#userMessage').val();
+      if (userMessage) {
+        const message = '<strong>User:</strong> ' + userMessage;
+        $('#chatMessages').append('<p>' + message + '</p>');
+        $('#userMessage').val(''); // Clear the input field
+        // Replace this with your actual code to send a message
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>

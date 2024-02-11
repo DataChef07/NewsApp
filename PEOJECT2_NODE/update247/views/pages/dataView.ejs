@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partial/head'); %>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body class="container">
+<header>
+  <%- include('../partial/headerAdmin'); %>
+</header>
+
+<main>
+    <% if(data!=null) { %>
+        <table>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Published At</th>
+            <th>Edit/Delete</th>
+        </tr>
+        <% data.forEach(function(item){ %>
+        <tr>
+            <td><%= item.title%></td>
+            <td><%= item.content%></td>
+            <td><%= item.publishedAt%></td>
+            <td>
+              <!-- Edit Form -->
+              <form action="/editNews" method="GET" style="display:inline;">
+                <input type="hidden" name="newsId" value="<%= item._id %>">
+                <button type="submit" style="padding: 10px; cursor: pointer; background-color: gold; flex: 1;">Edit</button>
+              </form>
+              
+              <!-- Delete Form -->
+              <form action="/deleteNews" method="POST" style="display:inline;">
+                <input type="hidden" name="newsId" value="<%= item._id %>">
+                <button type="submit" style="padding: 10px; cursor: pointer; background-color: red; flex: 1;">Delete</button>
+              </form>
+
+            </td>
+        </tr>
+        <% }) %>
+        </table>
+    <% } %>
+</main>
+
+<footer>
+  <%- include('../partial/footer'); %>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partial/head'); %>
+  </head>
+
+  <body class="container">
+    <header><%- include('../partial/headerUser'); %></header>
+
+    <div class="row">
+      <div class="col-sm-7">
+        <div class="jumbotron">
+          <!-- <div id="map"></div> -->
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14025.449581329729!2d77.1667226!3d28.4987426!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1f0827f03b4d%3A0x5eb8b21f9ede1492!2sBaazi%20Game!5e0!3m2!1sen!2sin!4v1707220779400!5m2!1sen!2sin"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+
+      <div class="col-sm-5">
+        <div class="jumbotron">
+          <div class="location-info">
+            <h2>Update 24x7</h2>
+            <p>
+              Ashok Lane, 5 Retreat Farm, Khullar Farm, Mandi Rd, Mehrauli, New
+              Delhi, Delhi 110030
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer><%- include('../partial/footer'); %></footer>
+  </body>
+</html>

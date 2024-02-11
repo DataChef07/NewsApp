@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  # User Node app service
+  user_app:
+    build: .
+    ports:
+      - 3001:3001
+    environment:
+      PORT: 3001
+      MONGODB_URI: mongodb://db_container:27017  # Use the service name 'db_container'
+      DB_NAME: BGDb
+      NAME: TrulyMittal
+    depends_on:
+      - db_container  # Depend on the MongoDB container from admin app
+
+volumes:
+  mongo_data: {}
